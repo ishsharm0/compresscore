@@ -133,6 +133,21 @@ CompressCore uses a smart iterative approach:
 | **B-frames** | Improved compression efficiency |
 | **hvc1 tag** | QuickTime/iOS compatibility |
 
+## Benchmarks
+
+Tested on Apple Silicon (M-series) with VideoToolbox hardware acceleration:
+
+| Input | Duration | Input Size | Target | Output | Compression | Time | Speed |
+|-------|----------|------------|--------|--------|-------------|------|-------|
+| 1080p 30fps | 10s | 24 MB | 8 MB | 7.5 MB | 3.2x | 6.0s | 1.7x realtime |
+| 1080p 30fps | 30s | 72 MB | 8 MB | 7.6 MB | 9.5x | 8.5s | 3.5x realtime |
+| 1440p 60fps | 60s | 425 MB | 8 MB | 7.6 MB | 55.9x | 8.4s | 7.1x realtime |
+| 4K 30fps | 120s | 1.1 GB | 25 MB | 24 MB | 46.9x | 32.5s | 3.7x realtime |
+| 1080p 30fps | 30s | 72 MB | 25 MB | 24 MB | 3.0x | 8.6s | 3.5x realtime |
+| 1440p 60fps | 60s | 425 MB | 50 MB | 47 MB | 9.0x | 16.5s | 3.6x realtime |
+
+> **Note:** Longer videos compress faster relative to their duration because encoding overhead is amortized. The smart FPS selection automatically reduces framerate for low-bitrate targets to maintain quality.
+
 ## Requirements
 
 - **macOS** (VideoToolbox is macOS-only)

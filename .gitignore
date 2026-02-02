@@ -42,7 +42,6 @@ ENV/
 # Test outputs
 *.mp4
 *.mov
-!test1.mov
 
 # Distribution
 *.tar.gz
