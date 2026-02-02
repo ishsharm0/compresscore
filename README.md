@@ -1,7 +1,7 @@
 # CompressCore
 
 <p align="center">
-  <strong>🎬 Size-targeted video compression with hardware acceleration</strong>
+  <strong>Size-targeted video compression with hardware acceleration</strong>
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@
 
 ---
 
-## ⚡ Quick Demo
+## Quick Demo
 
 ```bash
 # Compress a 500MB screen recording to Discord's 8MB limit
@@ -26,7 +26,7 @@ cpc recording.mov -c
 # Output copied to clipboard, ready to paste!
 ```
 
-## 🚀 Performance
+## Performance
 
 Tested on MacBook Air M4 — **up to 7x faster than realtime**:
 
@@ -40,18 +40,18 @@ Tested on MacBook Air M4 — **up to 7x faster than realtime**:
 
 ---
 
-## ✨ Features
+## Features
 
-- **📦 Size-targeted** — Specify exact output size (8MB, 25MB, etc.)
-- **⚡ Hardware accelerated** — Uses Apple VideoToolbox for fast encoding
-- **🧠 Smart quality** — Automatically trades FPS for quality at low bitrates
-- **🖥️ Screen recording optimized** — Spatial AQ preserves text and UI elements
-- **🎨 HDR compatible** — Auto-converts HDR to SDR for compatibility
-- **📋 Clipboard copy** — Copy output with `-c` for instant sharing
+- **Size-targeted** — Specify exact output size (8MB, 25MB, etc.)
+- **Hardware accelerated** — Uses Apple VideoToolbox for fast encoding
+- **Smart quality** — Automatically trades FPS for quality at low bitrates
+- **Screen recording optimized** — Spatial AQ preserves text and UI elements
+- **HDR compatible** — Auto-converts HDR to SDR for compatibility
+- **Clipboard copy** — Copy output with `-c` for instant sharing
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### One-liner (Recommended)
 
@@ -75,7 +75,7 @@ pip install -e .
 
 ---
 
-## 🎯 Usage
+## Usage
 
 ```bash
 # Basic — compress to 8MB (Discord default)
@@ -112,7 +112,7 @@ cpc video.mov -v
 
 ---
 
-## 📊 Example Output
+## Example Output
 
 ```
 ℹ Input: screen_recording.mov
@@ -134,7 +134,7 @@ cpc video.mov -v
 
 ---
 
-## 🔧 How It Works
+## How It Works
 
 1. **Analyze** — Probe input for duration, resolution, and audio
 2. **Calculate** — Determine available bitrate from target size
@@ -154,7 +154,7 @@ cpc video.mov -v
 
 ---
 
-## 🐍 Python API
+## Python API
 
 ```python
 from compresscore import compress, probe, parse_size_to_bytes
@@ -175,6 +175,6 @@ print(f"Compressed to {result.video_kbps} kbps")
 
 ---
 
-## 📄 License
+## License
 
 MIT © 2026
