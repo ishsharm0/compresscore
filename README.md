@@ -89,7 +89,7 @@ cpc video.mov -v
 |--------|---------|-------------|
 | `-t, --target` | `8MB` | Target output size (supports arbitrary sizes: `5MB`, `8MB`, `12MB`, `25MB`, `8M`, `7.63MiB`, `8000KB`, `8000000`, `.008GB`) |
 | `-o, --output` | `<input>_compressed.mp4` | Output file path |
-| `-c, --copy` | | Copy output to clipboard (macOS) |
+| `-c, --copy` | | Copy output to clipboard - directly paste wherever you want. |
 | `--codec` | `hevc` | Video codec (`hevc` or `h264`) |
 | `--max-width` | `1920` | Maximum output width |
 | `--fps` | `60` | Maximum framerate |
