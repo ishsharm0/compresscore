@@ -87,19 +87,30 @@ def has_videotoolbox_encoder(codec: str) -> bool:
         return False
 
 
-def run_ffmpeg(cmd: list[str], *, quiet: bool = False) -> None:
-    """Run an ffmpeg command, streaming progress to stderr.
+def run_ffmpeg(
+    cmd: list[str],
+    *,
+    quiet: bool = False,
+    duration_s: float = 0.0,
+    progress_callback: "Optional[callable]" = None,
+) -> None:
+    """Run an ffmpeg command with optional progress tracking.
     
     Args:
         cmd: FFmpeg arguments (without the 'ffmpeg' executable itself).
         quiet: If True, suppress progress output.
+        duration_s: Total duration in seconds for progress calculation.
+        progress_callback: Callable(percent: float, time_s: float) for progress updates.
     
     Raises:
         RuntimeError: If ffmpeg exits with a non-zero code.
         KeyboardInterrupt: If the user cancels the operation.
     """
+    import re
+    
     ffmpeg = _require_tool("ffmpeg")
-    full = [ffmpeg, *cmd]
+    # Add progress output to stderr
+    full = [ffmpeg, "-progress", "pipe:2", "-nostats", *cmd]
     
     try:
         p = subprocess.Popen(
@@ -107,15 +118,40 @@ def run_ffmpeg(cmd: list[str], *, quiet: bool = False) -> None:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
+            bufsize=1,  # Line buffered
         )
 
-        # Stream stderr to user for progress visibility.
+        time_pattern = re.compile(r"out_time_ms=(\d+)")
+        
         if p.stderr is not None:
-            for line in p.stderr:
-                if not quiet:
-                    print(line.rstrip())
+            while True:
+                line = p.stderr.readline()
+                if not line and p.poll() is not None:
+                    break
+                if not line:
+                    continue
+                    
+                line = line.strip()
+                
+                # Parse progress info
+                if progress_callback and duration_s > 0:
+                    match = time_pattern.match(line)
+                    if match:
+                        time_us = int(match.group(1))
+                        time_s = time_us / 1_000_000
+                        percent = min(100.0, (time_s / duration_s) * 100)
+                        progress_callback(percent, time_s)
+                
+                # Show raw output in verbose mode
+                if not quiet and not line.startswith(("frame=", "fps=", "stream_", "out_time", "dup_", "drop_", "speed=", "progress=", "bitrate=")):
+                    print(line)
 
         rc = p.wait()
+        
+        # Final progress update
+        if progress_callback and duration_s > 0:
+            progress_callback(100.0, duration_s)
+        
         if rc != 0:
             raise RuntimeError(f"ffmpeg failed with exit code {rc}")
     except KeyboardInterrupt:

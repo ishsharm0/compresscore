@@ -290,10 +290,15 @@ def compress(
 
                         cmd = build_ffmpeg_cmd(input_path, candidate, plan)
                         
-                        # Show progress
+                        # Create progress callback for real-time updates
+                        progress_cb = None
                         if console and not verbose:
                             label = f"{maxw}p {fps}fps {local_kbps}kbps"
-                            console.progress(current_rung, total_rungs, label)
+                            def make_progress_cb(lbl: str):
+                                def cb(pct: float, time_s: float):
+                                    console.encoding_progress(pct, lbl)
+                                return cb
+                            progress_cb = make_progress_cb(label)
                         elif verbose:
                             if console:
                                 console.debug(
@@ -308,7 +313,12 @@ def compress(
                                     f"target={target_bytes:,} bytes"
                                 )
                         
-                        run_ffmpeg(cmd, quiet=not verbose)
+                        run_ffmpeg(
+                            cmd,
+                            quiet=not verbose,
+                            duration_s=duration_s,
+                            progress_callback=progress_cb,
+                        )
 
                         size = _file_size(candidate)
                         

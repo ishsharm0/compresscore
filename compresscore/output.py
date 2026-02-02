@@ -124,6 +124,23 @@ class Console:
         
         print(line, end="", flush=True)
     
+    def encoding_progress(self, percent: float, label: str = "") -> None:
+        """Print encoding progress with percentage."""
+        if self.quiet:
+            return
+        
+        width = 30
+        filled = int(width * percent / 100)
+        bar = "█" * filled + "░" * (width - filled)
+        
+        line = f"  {_colorize(bar, Color.CYAN)} {percent:5.1f}%"
+        if label:
+            line += f" {_colorize(label, Color.DIM)}"
+        
+        # Move cursor to beginning of line, clear line, print
+        sys.stdout.write(f"\x1b[2K\r{line}")
+        sys.stdout.flush()
+    
     def progress_done(self) -> None:
         """Complete the progress bar line."""
         if not self.quiet:

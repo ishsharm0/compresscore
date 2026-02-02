@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -100,6 +101,11 @@ Examples:
         "--no-color",
         action="store_true",
         help="Disable colored output.",
+    )
+    ap.add_argument(
+        "-c", "--copy",
+        action="store_true",
+        help="Copy output file to clipboard (macOS only).",
     )
     ap.add_argument(
         "--version",
@@ -209,6 +215,22 @@ Examples:
             console.result("Settings", f"{result.width}×{result.height} @ {result.fps}fps, {format_bitrate(result.video_kbps)}")
             console.result("Time", f"{format_duration(elapsed)} ({speed_factor:.1f}x realtime)")
             console.result("Attempts", str(result.attempts))
+        
+        # Copy to clipboard if requested
+        if args.copy:
+            try:
+                # use osascript to copy file to clipboard
+                script = f'set the clipboard to (POSIX file "{result.output_path}")'
+                subprocess.run(
+                    ["osascript", "-e", script],
+                    check=True,
+                    capture_output=True,
+                )
+                console.success("Copied to clipboard")
+            except FileNotFoundError:
+                console.warning("Clipboard copy failed: osascript not found (macOS only)")
+            except subprocess.CalledProcessError:
+                console.warning("Clipboard copy failed")
         
     except ToolMissing as e:
         console.error(str(e))

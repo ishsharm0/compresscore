@@ -13,6 +13,7 @@ A size-targeted video compressor using FFmpeg with Apple VideoToolbox hardware a
 - **Smart quality** — Automatically trades FPS for quality at low bitrates
 - **Screen recording optimized** — Spatial AQ preserves text and UI elements
 - **HDR compatible** — Auto-converts HDR to SDR for compatibility
+- **Clipboard copy** — Copy output to clipboard with `-c` for instant sharing
 
 ## Installation
 
@@ -37,8 +38,9 @@ pip install -e .
 ```bash
 # Compress to 8MB (Discord-friendly)
 cpc video.mov
-# Or use the module directly:
-python -m compresscore video.mov
+
+# Compress and copy to clipboard
+cpc video.mov -c
 
 # Compress to 25MB
 cpc video.mov -t 25MB
@@ -68,6 +70,7 @@ cpc input.mov --audio-kbps 128     # Higher audio quality
 cpc input.mov -v                   # Verbose (show FFmpeg output)
 cpc input.mov -q                   # Quiet (print path only)
 cpc input.mov --no-color           # Disable colors
+cpc input.mov -c                   # Copy to clipboard after compress
 ```
 
 ## Options
@@ -83,6 +86,7 @@ cpc input.mov --no-color           # Disable colors
 | `--min-audio-kbps` | `48` | Minimum audio before muting |
 | `--max-retries` | `3` | Bitrate attempts per quality level |
 | `--overhead` | `0.02` | Container overhead margin |
+| `-c, --copy` | | Copy output file to clipboard (macOS) |
 | `-v, --verbose` | | Show FFmpeg output and debug info |
 | `-q, --quiet` | | Output only the result path |
 | `--no-color` | | Disable colored terminal output |

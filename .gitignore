@@ -47,3 +47,5 @@ ENV/
 # Distribution
 *.tar.gz
 *.whl
+*.mov
+*.mp4
