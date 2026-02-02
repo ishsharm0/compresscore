@@ -21,7 +21,7 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  cpc video.mov                     Compress to 8MB (Discord-friendly)
+  cpc video.mov                     Compress to 10MB (Discord-friendly)
   cpc video.mov -t 25MB             Compress to 25MB
   cpc video.mov -o output.mp4       Specify output path
   cpc video.mov --codec h264        Use H.264 (more compatible)
@@ -42,8 +42,8 @@ Examples:
     ap.add_argument(
         "-t", "--target",
         type=str,
-        default="8.0MB",
-        help="Target size (e.g., 8MB, 7.9MB, 8MiB, 25000000). Default: 8MB",
+        default="10MB",
+        help="Target size (e.g., 10MB, 7.9MB, 8MiB, 25000000). Default: 10MB",
     )
     ap.add_argument(
         "--codec",
