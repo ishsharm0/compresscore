@@ -226,7 +226,7 @@ Examples:
                     check=True,
                     capture_output=True,
                 )
-                console.success("Copied to clipboard")
+                console.success("Copied file to clipboard")
             except FileNotFoundError:
                 console.warning("Clipboard copy failed: osascript not found (macOS only)")
             except subprocess.CalledProcessError:
