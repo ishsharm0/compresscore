@@ -19,12 +19,7 @@
 
 ## Quick Demo
 
-```bash
-# Compress a 500MB screen recording to Discord's 8MB limit
-cpc recording.mov -c
-
-# Output copied to clipboard, ready to paste!
-```
+<img src="test.png">
 
 ## Performance
 
