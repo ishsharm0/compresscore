@@ -18,9 +18,9 @@ Tested on [MacBook Air M4](https://support.apple.com/en-us/122209#:~:text=Midnig
 
 | Input | Size | Target | Output | Compression | Time |
 |-------|------|--------|--------|-------------|------|
-| 60s 1440p screen recording | 425 MB | 8 MB | 7.6 MB | **55.9x smaller** | 8.4s |
-| 2min 4K video | 1.1 GB | 25 MB | 24 MB | **46.9x smaller** | 32.5s |
-| 30s 1080p clip | 72 MB | 8 MB | 7.6 MB | **9.5x smaller** | 8.5s |
+| 60s 1440p video | 446 MB | 10 MB | 9.9 MB | **45.2x smaller** | 8.4s |
+| 2min 4K video | 1.18 GB | 25 MB | 24.7 MB | **47.5x smaller** | 32.4s |
+| 30s 1080p clip | 136 MB | 10 MB | 9.9 MB | **13.8x smaller** | 8.4s |
 
 > Smart FPS optimization automatically reduces framerate for low-bitrate targets to keep text sharp and readable.
 
@@ -28,12 +28,14 @@ Tested on [MacBook Air M4](https://support.apple.com/en-us/122209#:~:text=Midnig
 
 ## Features
 
-- **Size-targeted** - Specify exact output size (8MB, 25MB, etc.)
+- **Size-targeted** - Specify exact output size (10MB, 25MB, etc.)
 - **Hardware accelerated** - Uses Apple VideoToolbox for fast encoding
 - **Smart quality** - Automatically trades FPS for quality at low bitrates
 - **Screen recording optimized** - Spatial AQ preserves text and UI elements
 - **HDR compatible** - Auto-converts HDR to SDR for compatibility
-- **Clipboard copy** - Copy output with `-c` for instant sharing
+- **Clipboard copy** - Copy outputted file with `-c` for instant sharing
+- **Replace original** - Use `-r` to replace the original file
+- **Delete original** - Use `-d` to delete the original after compression
 
 ---
 
@@ -64,11 +66,17 @@ pip install -e .
 ## Usage
 
 ```bash
-# Basic - compress to 8MB (Discord default)
+# Basic - compress to 10MB (Discord default)
 cpc video.mov
 
 # Copy to clipboard after compression
 cpc video.mov -c
+
+# Replace original file
+cpc video.mov -r
+
+# Delete original after compression
+cpc video.mov -d
 
 # Custom target size
 cpc video.mov -t 25MB
@@ -90,6 +98,8 @@ cpc video.mov -v
 | `-t, --target` | `10MB` | Target output size (supports arbitrary sizes: `5MB`, `8MB`, `12MB`, `25MB`, `8M`, `7.63MiB`, `8000KB`, `8000000`, `.008GB`) |
 | `-o, --output` | `<input>_compressed.mp4` | Output file path |
 | `-c, --copy` | | Copy output to clipboard - directly paste wherever you want. |
+| `-r, --replace` | | Replace original file (output keeps same name) |
+| `-d, --delete` | | Delete original file after successful compression |
 | `--codec` | `hevc` | Video codec (`hevc` or `h264`) |
 | `--max-width` | `1920` | Maximum output width |
 | `--fps` | `60` | Maximum framerate |

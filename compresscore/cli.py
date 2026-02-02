@@ -25,6 +25,8 @@ Examples:
   cpc video.mov -t 25MB             Compress to 25MB
   cpc video.mov -o output.mp4       Specify output path
   cpc video.mov --codec h264        Use H.264 (more compatible)
+  cpc video.mov -r                  Replace original file
+  cpc video.mov -d                  Delete original after compression
   cpc video.mov -v                  Verbose output
 """,
     )
@@ -108,6 +110,16 @@ Examples:
         help="Copy output file to clipboard (macOS only).",
     )
     ap.add_argument(
+        "-d", "--delete",
+        action="store_true",
+        help="Delete original file after successful compression.",
+    )
+    ap.add_argument(
+        "-r", "--replace",
+        action="store_true",
+        help="Replace original file (output keeps the same name).",
+    )
+    ap.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {__version__}",
@@ -132,8 +144,20 @@ Examples:
         console.error(f"Input is not a file: {input_path}")
         sys.exit(1)
 
+    # Validate conflicting options
+    if args.replace and args.output:
+        console.error("Cannot use --replace with --output")
+        sys.exit(1)
+    
+    if args.replace and args.delete:
+        console.error("Cannot use --replace with --delete (replace already removes original)")
+        sys.exit(1)
+
     if args.output:
         output_path = Path(args.output).expanduser().resolve()
+    elif args.replace:
+        # Use a temp name, will rename to original after success
+        output_path = input_path.with_name(f"{input_path.stem}_compressed_temp.mp4")
     else:
         output_path = input_path.with_name(f"{input_path.stem}_compressed.mp4")
 
@@ -216,11 +240,31 @@ Examples:
             console.result("Time", f"{format_duration(elapsed)} ({speed_factor:.1f}x realtime)")
             console.result("Attempts", str(result.attempts))
         
+        # Handle file replacement/deletion
+        final_output_path = result.output_path
+        if args.replace:
+            try:
+                input_path.unlink()
+                # Rename output to original filename (but with .mp4 extension)
+                new_path = input_path.with_suffix(".mp4")
+                result.output_path.rename(new_path)
+                final_output_path = new_path
+                console.success(f"Replaced original file")
+            except OSError as e:
+                console.error(f"Failed to replace original file: {e}")
+                sys.exit(1)
+        elif args.delete:
+            try:
+                input_path.unlink()
+                console.success(f"Deleted original file")
+            except OSError as e:
+                console.warning(f"Failed to delete original file: {e}")
+        
         # Copy to clipboard if requested
         if args.copy:
             try:
                 # use osascript to copy file to clipboard
-                script = f'set the clipboard to (POSIX file "{result.output_path}")'
+                script = f'set the clipboard to (POSIX file "{final_output_path}")'
                 subprocess.run(
                     ["osascript", "-e", script],
                     check=True,
