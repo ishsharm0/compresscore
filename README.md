@@ -1,18 +1,10 @@
-# CompressCore
-
+# CompressCore <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="Python 3.9+"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License"></a> <a href="https://www.apple.com/macos/"><img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg" alt="macOS"></a>
 <p align="center">
   <strong>Fast, local, size-targeted video compression with hardware acceleration, all in the CLI</strong>
 </p>
-<center><img src="test.gif" align="center" width="400"></center>
-<br>
-
-<br>
 <p align="center">
-  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="Python 3.9+"></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License"></a>
-  <a href="https://www.apple.com/macos/"><img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg" alt="macOS"></a>
+<img src="test.gif" align="center" width="400">
 </p>
-
 <p align="center">
   Compress any video to an exact file size. Perfect for Discord, Slack, email, or any platform with upload limits.<br>
   Uses Apple VideoToolbox for ultra-fast hardware-accelerated encoding.
