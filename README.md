@@ -3,7 +3,7 @@
 <p align="center">
   <strong>Fast, local, size-targeted video compression with hardware acceleration, all in the CLI</strong>
 </p>
-<img src="test.gif" align="center" width="400">
+<center><img src="test.gif" align="center" width="400"></center>
 <br>
 
 <br>
