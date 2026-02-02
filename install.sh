@@ -4,6 +4,8 @@
 
 set -e
 
+REPO="https://github.com/ishsharm0/compresscore.git"
+
 BOLD='\033[1m'
 GREEN='\033[32m'
 BLUE='\033[34m'
@@ -42,8 +44,8 @@ fi
 
 # Try pipx first (preferred)
 if command -v pipx &> /dev/null; then
-    info "Installing with pipx..."
-    pipx install compresscore 2>/dev/null || pipx install --force compresscore
+    info "Installing with pipx from GitHub..."
+    pipx install "git+${REPO}" 2>/dev/null || pipx install --force "git+${REPO}"
     success "Installed with pipx"
     
     # Ensure pipx bin is in PATH
@@ -54,8 +56,8 @@ if command -v pipx &> /dev/null; then
         info "Added $PIPX_BIN to PATH in $SHELL_RC"
     fi
 else
-    info "Installing with pip..."
-    pip3 install --user compresscore
+    info "Installing with pip from GitHub..."
+    pip3 install --user "git+${REPO}"
     success "Installed with pip"
     
     # Add Python user bin to PATH if needed
